@@ -17,7 +17,10 @@ pub struct Workspaces {
     /// All remaining workspaces that are currently hidden
     pub hidden:   Vec<Workspace>,
     /// A list of all floating windows
-    pub floating: BTreeMap<Window, RationalRect>
+    pub floating: BTreeMap<Window, RationalRect>,
+    /// previous Workspace (basic one level stack for workspace until I implement stack handling
+    /// for workspace viewing).
+    pub previous_workspace: Workspace
 }
 
 impl Clone for Workspaces {
@@ -26,7 +29,8 @@ impl Clone for Workspaces {
             current: self.current.clone(),
             visible: self.visible.clone(),
             hidden:  self.hidden.clone(),
-            floating: self.floating.clone()
+            floating: self.floating.clone(),
+            previous_workspace: self.previous_workspace.clone()
         }
     }
 }
@@ -63,16 +67,24 @@ impl Workspaces {
             current: current[0].clone(),
             visible: current.iter().skip(1).map(|x| x.clone()).collect(),
             hidden: unseen,
-            floating: BTreeMap::new()
+            floating: BTreeMap::new(),
+            previous_workspace: current[0].workspace.clone()
         }
     }
 
     pub fn from_current(&self, current: Screen) -> Workspaces {
+        let new_workspace = if current.workspace.id != self.current.workspace.id {
+            self.current.workspace.clone()
+        } else {
+            self.previous_workspace.clone()
+        };
+
         Workspaces {
             current: current,
             visible: self.visible.clone(),
             hidden: self.hidden.clone(),
-            floating: self.floating.clone()
+            floating: self.floating.clone(),
+            previous_workspace: new_workspace
         }
     }
 
@@ -81,7 +93,8 @@ impl Workspaces {
             current: self.current.clone(),
             visible: visible,
             hidden: self.hidden.clone(),
-            floating: self.floating.clone()
+            floating: self.floating.clone(),
+            previous_workspace: self.previous_workspace.clone()
         }
     }
 
@@ -90,7 +103,8 @@ impl Workspaces {
             current: self.current.clone(),
             visible: self.visible.clone(),
             hidden: hidden,
-            floating: self.floating.clone()
+            floating: self.floating.clone(),
+            previous_workspace: self.previous_workspace.clone()
         }
     }
 
@@ -446,7 +460,8 @@ impl Workspaces {
             current: self.current.clone(),
             visible: self.visible.clone(),
             hidden: self.hidden.clone(),
-            floating: map
+            floating: map,
+            previous_workspace: self.previous_workspace.clone()
         }
     }
 }

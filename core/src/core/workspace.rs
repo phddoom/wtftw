@@ -5,6 +5,7 @@ use core::stack::Stack;
 
 /// Represents a single workspace with a `tag` (name),
 /// `id`, a `layout` and a `stack` for all windows
+#[derive(Debug)]
 pub struct Workspace {
     pub id:     u32,
     pub tag:    String,

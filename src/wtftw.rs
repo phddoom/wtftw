@@ -84,6 +84,15 @@ fn main() {
                                                         window_system.clone(), window));
     }
 
+    for window in window_system.get_windows() {
+        window_manager = window_manager.windows(window_system.deref(),
+                                                &config.general,
+                                                &|x| (config.internal.manage_hook)(x.clone(),
+                                                                                   window_system.clone(),
+                                                                                   window)
+                                                );
+    }
+
     window_manager = (*config.internal.startup_hook)(window_manager, window_system.clone(), &config);
 
     // Enter the event loop and just listen for events

@@ -5,6 +5,7 @@ use layout::LayoutMessage;
 use config::GeneralConfig;
 use window_manager::ScreenDetail;
 
+#[derive(Debug)]
 pub struct Screen {
     pub workspace:     Workspace,
     pub screen_id:     u32,

@@ -169,7 +169,7 @@ impl WindowManager {
             if screen.screen_id == self.workspaces.current.screen_id &&
                screen.workspace.peek() != Some(window) {
                 return self.windows(window_system, config, &|w| w.focus_window(window))
-            } else if window == window_system.get_root() {
+            } else { //if window == window_system.get_root() {
                 return self.windows(window_system, config, &|w| w.view(screen.workspace.id))
             }
         }
@@ -284,13 +284,13 @@ impl WindowManager {
                                config: &GeneralConfig) -> WindowManager {
         self.modify_workspaces(|w| w.send_layout_message(message, window_system, config))
     }
-    
+
     /// Close the currently focused window
     pub fn close_window(&self, window_system: &WindowSystem) -> WindowManager {
         self.workspaces.with_focused(|w| window_system.close_client(w));
         self.clone()
     }
-    
+
     /// Kill the currently focused window
     pub fn kill_window(&self, window_system: &WindowSystem) -> WindowManager {
         self.workspaces.with_focused(|w| window_system.kill_client(w));

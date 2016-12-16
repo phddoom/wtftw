@@ -2,7 +2,7 @@
 /// `focus` keeps track of the focused window's id
 /// and `up` and `down` are the windows above or
 /// below the focus stack respectively.
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Stack<T> {
     pub focus: T,
     pub up:    Vec<T>,

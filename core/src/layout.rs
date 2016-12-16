@@ -1,5 +1,6 @@
 extern crate num;
 
+use std::fmt;
 use std::borrow::ToOwned;
 use core::stack::Stack;
 use window_system::Window;
@@ -72,6 +73,12 @@ pub trait Layout {
     fn description(&self) -> String;
     fn copy(&self) -> Box<Layout> { panic!("") }
     fn unhook(&self, _: &WindowSystem, _: &Option<Stack<Window>>, _: &GeneralConfig) { }
+}
+
+impl fmt::Debug for Layout {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Layout: {}", self.description())
+    }
 }
 
 #[derive(Clone, Copy)]
